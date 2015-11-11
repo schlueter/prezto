@@ -1,3 +1,4 @@
+# vim: set ft=zsh expandtab tabstop=2 shiftwidth=2:
 # A two-line, Powerline-inspired theme that displays contextual information.
 #
 # This theme requires a patched Powerline font, get them from
