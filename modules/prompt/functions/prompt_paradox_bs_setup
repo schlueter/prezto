@@ -23,6 +23,22 @@ _prompt_paradox_initial_segment_separator=
 _prompt_paradox_segment_separator=
 _prompt_paradox_start_time=$SECONDS
 
+function prompt_paradox_start_no_sep_segment {
+  local bg="%K{$1}"
+  local fg="%F{$2}"
+  if [[ $_prompt_paradox_current_bg == default && $bg != '%K{default}' ]]
+  then
+    print -n "$bg$fg"
+  elif [[ $bg != "%K{$_prompt_paradox_current_bg}" ]]
+  then
+    print -n "$bg$fg "
+  else
+    print -n "$bg$fg"
+  fi
+  _prompt_paradox_current_bg="$1"
+  [[ -n "$3" ]] && print -n "$3"
+}
+
 function prompt_paradox_start_segment {
   local bg="%K{$1}"
   local fg="%F{$2}"
@@ -54,13 +70,13 @@ function prompt_paradox_build_prompt {
   if [[ -n "$SSH_CLIENT" ]] \
   || [[ -n "$SSH_TTY" ]]
   then
-    prompt_paradox_start_segment yellow black '%n'
+    prompt_paradox_start_no_sep_segment yellow black '%n'
     prompt_paradox_start_segment yellow red '@'
     prompt_paradox_start_segment yellow black '%m'
   fi
 
   prompt_paradox_start_segment default blue '$_prompt_paradox_pwd '
-  prompt_paradox_start_segment default default '%(!:%F{yellow}⚡  :)%(1j:%F{cyan}⚙  :)'
+  prompt_paradox_start_segment default default '%(!:%F{yellow} ⚡  :)%(1j:%F{cyan} ⚙  :)'
 
 
   if [[ -n "$python_info" ]] \
