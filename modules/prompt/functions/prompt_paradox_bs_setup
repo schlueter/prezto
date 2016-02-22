@@ -72,7 +72,7 @@ function prompt_paradox_build_prompt {
   then
     prompt_paradox_start_no_sep_segment yellow black '%n'
     prompt_paradox_start_segment yellow red '@'
-    prompt_paradox_start_segment yellow black '%m'
+    prompt_paradox_start_segment yellow black '%M'
   fi
 
   prompt_paradox_start_segment default blue '$_prompt_paradox_pwd '
