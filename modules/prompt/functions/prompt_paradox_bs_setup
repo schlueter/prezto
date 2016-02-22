@@ -76,7 +76,7 @@ function prompt_paradox_build_prompt {
   fi
 
   prompt_paradox_start_segment default blue '$_prompt_paradox_pwd '
-  prompt_paradox_start_segment default default '%(!:%F{yellow} ⚡  :)%(1j:%F{cyan} ⚙  :)'
+  prompt_paradox_start_segment default default '%(!:%F{yellow}⚡  :)%(1j:%F{cyan}⚙  :)'
 
 
   if [[ -n "$python_info" ]] \
