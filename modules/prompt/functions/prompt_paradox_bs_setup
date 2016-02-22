@@ -51,18 +51,33 @@ function prompt_paradox_end_segment {
 }
 
 function prompt_paradox_build_prompt {
-  prompt_paradox_start_segment default cyan '%n'
-  prompt_paradox_start_segment default default '%(!:%F{yellow}⚡ :)%(1j:%F{cyan}⚙ :)'
-  prompt_paradox_start_segment default blue ' $_prompt_paradox_pwd '
-
-  if [[ -n "$python_info" ]]
+  if [[ -n "$SSH_CLIENT" ]] \
+  || [[ -n "$SSH_TTY" ]]
   then
-    prompt_paradox_start_segment green black '$python_info[virtualenv]'
+    prompt_paradox_start_segment yellow black '%n'
+    prompt_paradox_start_segment yellow red '@'
+    prompt_paradox_start_segment yellow black '%m'
   fi
 
-  if [[ -n "$git_info" ]]
+  prompt_paradox_start_segment default blue '$_prompt_paradox_pwd '
+  prompt_paradox_start_segment default default '%(!:%F{yellow}⚡  :)%(1j:%F{cyan}⚙  :)'
+
+
+  if [[ -n "$python_info" ]] \
+  || [[ -n "$git_info" ]]
   then
-    prompt_paradox_start_segment magenta black '${(e)git_info[ref]}${(e)git_info[status]}'
+    if [[ -n "$python_info" ]]
+    then
+      prompt_paradox_start_segment green black '$python_info[virtualenv]'
+    fi
+
+    if [[ -n "$git_info" ]]
+    then
+      prompt_paradox_start_segment default magenta '${(e)git_info[ref]}${(e)git_info[status]}'
+    fi
+    print -n "\n${editor_info[keymap]}"
+  else
+    print -n "${editor_info[keymap]}"
   fi
 
   prompt_paradox_end_segment
@@ -143,7 +158,7 @@ function prompt_paradox_setup {
 
   # Set editor-info parameters.
   zstyle ':prezto:module:editor:info:completing' format '%B%F{red}...%f%b'
-  zstyle ':prezto:module:editor:info:keymap:primary' format '%(?.%B%F{blue}.%B%F{red})❝%f%b'
+  zstyle ':prezto:module:editor:info:keymap:primary' format '%(?.%B%F{blue}.%B%F{red})⦙%f%b'
   zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format '%F{red}♺%f'
   zstyle ':prezto:module:editor:info:keymap:alternate' format '%B%F{red}❮%f%b'
 
@@ -171,9 +186,7 @@ function prompt_paradox_setup {
   zstyle ':prezto:module:python:info:virtualenv' format '🐍 %v'
 
   # Define prompts.
-  PROMPT='${(e)$(prompt_paradox_build_prompt)}
-${editor_info[keymap]}'
-  RPROMPT='%(?.%B%F{blue}.%B%F{red})❞%f%b'
+  PROMPT='${(e)$(prompt_paradox_build_prompt)}'
   SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
 }
 
